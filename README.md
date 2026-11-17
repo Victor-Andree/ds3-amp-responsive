@@ -32,7 +32,7 @@ HTML5 semántico, CSS3 y JavaScript Vanilla (ES6+). El diseño utiliza CSS Grid,
 4. Abrir la ficha AMP y comprobar la navegación, las miniaturas y las pestañas.
 5. Para revisar responsive, usar el modo de dispositivos del navegador a 320, 375, 768, 1024 y 1440 px.
 
-Abrir `index.html` o la raíz del sitio redirige automáticamente a la ficha AMP mediante meta refresh, sin JavaScript. Incluye un enlace alternativo accesible si el navegador no realiza la redirección. Las imágenes, documentación y enlaces comerciales de DS3 necesitan conexión a Internet.
+Abrir `index.html` o la raíz del sitio redirige automáticamente a la ficha AMP mediante meta refresh, sin JavaScript. Incluye un enlace alternativo accesible si el navegador no realiza la redirección. La documentación y los enlaces comerciales externos de DS3 necesitan conexión a Internet; las imágenes se incluyen en el proyecto.
 
 ## Estructura de archivos
 
@@ -56,7 +56,7 @@ Abrir `index.html` o la raíz del sitio redirige automáticamente a la ficha AMP
 └── index.html           # Redirección a ./6-1427200-4.html
 ```
 
-Las imágenes AMP se enlazan mediante HTTPS a los recursos publicados por DS3; no se incluyen copias locales ni imágenes genéricas. Algunas fichas oficiales comparten una fotografía de caja, que se identifica como referencial. La resolución de ciertas fotografías está limitada por el recurso original.
+Las imágenes visibles AMP se sirven desde `assets/images/amp/`, con rutas relativas compatibles con GitHub Pages. Son copias de los recursos oficiales de DS3, sin imágenes genéricas. Tres se convirtieron a WebP (calidad 95, dimensiones originales); la imagen JPEG de 91 × 40 px se conserva porque convertirla aumentaba su peso. Algunas fichas oficiales comparten una fotografía de caja, que se identifica como referencial. La resolución de ciertas fotografías está limitada por el recurso original.
 
 ## Preparación para GitHub Pages
 
@@ -65,7 +65,7 @@ El proyecto es estático y no necesita instalación de dependencias ni un paso d
 - La entrada de la ficha es `6-1427200-4.html` dentro del subdirectorio del repositorio.
 - Sus recursos locales usan rutas relativas: `css/amp-product.css` y `js/amp-product.js`.
 - Los fragmentos internos apuntan a identificadores de la misma página.
-- Las imágenes y el PDF usan direcciones HTTPS oficiales independientes del subdirectorio.
+- Las imágenes visibles usan rutas relativas en `assets/images/amp/`; el PDF y las referencias de imágenes del JSON-LD conservan sus direcciones HTTPS oficiales.
 - La raíz utiliza `index.html` para redirigir a `./6-1427200-4.html`. La ruta relativa funciona tanto en la raíz local como dentro del subdirectorio de GitHub Pages.
 - El índice Cisco original se conserva, byte por byte, en `legacy/index-cisco.html`. Es una copia de archivo: sus rutas relativas originales no se adaptaron a la carpeta legacy. La ficha `C9200L-24P-4G-E.html` permanece intacta en la raíz.
 - No se establece una URL canónica hasta confirmar la dirección oficial de producción.
@@ -115,3 +115,20 @@ Productos relacionados contrastados individualmente con el catálogo y sus ficha
 - [1859381-2 — Cat 6A, LSZH](https://www.ds3comunicaciones.com/AMP/1859381-2.html)
 
 Algunos encabezados de las fichas originales contienen códigos inconsistentes. Los modelos incorporados se contrastaron con el catálogo; para `1859381-2`, también con la tabla de su ficha. Las fotografías oficiales se mantienen identificadas como referenciales.
+
+## Optimización de imágenes
+
+Recursos de origen: `https://www.ds3comunicaciones.com/AMP/images/`.
+
+| Original oficial | Archivo local | Dimensiones | Bytes originales | Bytes locales |
+| --- | --- | --- | ---: | ---: |
+| Caja.jpg | assets/images/amp/caja.webp | 500 × 500 | 37393 | 31852 |
+| 6-1427200-4-1.jpg | assets/images/amp/6-1427200-4-1.webp | 508 × 238 | 32197 | 22400 |
+| 1427254-4-1.jpg | assets/images/amp/1427254-4-1.jpg | 91 × 40 | 1396 | 1396 |
+| 1859218-2.jpg | assets/images/amp/1859218-2.webp | 525 × 525 | 28427 | 18500 |
+
+Los cuatro recursos únicos pasan de 99413 a 74148 bytes: una reducción del 25,4 % (24,7 KiB). Es una comparación de archivos, no una nueva puntuación Lighthouse ni una reproducción de sus ahorros estimados. Las imágenes compartidas reutilizan la misma URL local. Se compararon visualmente los candidatos con los originales, sin diferencias perceptibles en la revisión.
+
+La imagen principal conserva `fetchpriority="high"` y no usa lazy loading. Las secundarias conservan carga diferida y dimensiones reservadas. El JavaScript mantiene `defer`; el CSS principal sigue bloqueando el primer render para evitar mostrar contenido sin estilos.
+
+En la consulta de cabeceras, las imágenes de DS3 anunciaron `max-age=604800` y el CSS publicado en GitHub Pages `max-age=600`. Servir imágenes propias elimina la conexión a DS3 para renderizar la página, pero no amplía la política de caché de GitHub Pages. El JSON-LD permanece intacto y referencia las imágenes oficiales.
