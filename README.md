@@ -32,7 +32,7 @@ HTML5 semántico, CSS3 y JavaScript Vanilla (ES6+). El diseño utiliza CSS Grid,
 4. Abrir la ficha AMP y comprobar la navegación, las miniaturas y las pestañas.
 5. Para revisar responsive, usar el modo de dispositivos del navegador a 320, 375, 768, 1024 y 1440 px.
 
-Abrir `index.html` muestra la plantilla Cisco conservada, no la nueva ficha AMP. Las imágenes, documentación y enlaces comerciales de DS3 necesitan conexión a Internet.
+Abrir `index.html` o la raíz del sitio redirige automáticamente a la ficha AMP mediante meta refresh, sin JavaScript. Incluye un enlace alternativo accesible si el navegador no realiza la redirección. Las imágenes, documentación y enlaces comerciales de DS3 necesitan conexión a Internet.
 
 ## Estructura de archivos
 
@@ -51,7 +51,9 @@ Abrir `index.html` muestra la plantilla Cisco conservada, no la nueva ficha AMP.
 │   └── navbar.html      # Original Cisco, conservado
 ├── icons/               # Recursos originales Cisco
 ├── C9200L-24P-4G-E.html   # Ficha Cisco original, conservada
-└── index.html           # Entrada original Cisco, conservada
+├── legacy/
+│   └── index-cisco.html  # Copia exacta del índice Cisco original
+└── index.html           # Redirección a ./6-1427200-4.html
 ```
 
 Las imágenes AMP se enlazan mediante HTTPS a los recursos publicados por DS3; no se incluyen copias locales ni imágenes genéricas. Algunas fichas oficiales comparten una fotografía de caja, que se identifica como referencial. La resolución de ciertas fotografías está limitada por el recurso original.
@@ -64,10 +66,11 @@ El proyecto es estático y no necesita instalación de dependencias ni un paso d
 - Sus recursos locales usan rutas relativas: `css/amp-product.css` y `js/amp-product.js`.
 - Los fragmentos internos apuntan a identificadores de la misma página.
 - Las imágenes y el PDF usan direcciones HTTPS oficiales independientes del subdirectorio.
-- Se conserva `index.html`; visitar la raíz del sitio seguirá mostrando Cisco.
+- La raíz utiliza `index.html` para redirigir a `./6-1427200-4.html`. La ruta relativa funciona tanto en la raíz local como dentro del subdirectorio de GitHub Pages.
+- El índice Cisco original se conserva, byte por byte, en `legacy/index-cisco.html`. Es una copia de archivo: sus rutas relativas originales no se adaptaron a la carpeta legacy. La ficha `C9200L-24P-4G-E.html` permanece intacta en la raíz.
 - No se establece una URL canónica hasta confirmar la dirección oficial de producción.
 
-La configuración de publicación en GitHub Pages, así como cualquier commit o push, queda pendiente de autorización. Este README no implica que el sitio esté publicado.
+La ficha AMP está publicada en [GitHub Pages](https://victor-andree.github.io/ds3-amp-responsive/6-1427200-4.html). Tras publicar este cambio, la [URL principal](https://victor-andree.github.io/ds3-amp-responsive/) dirigirá automáticamente a ella. La redirección se ha preparado localmente; su commit y push requieren autorización.
 
 ## Validación y resultados locales de Lighthouse
 
@@ -100,7 +103,7 @@ No se añaden precios, disponibilidad, reseñas ni calificaciones ficticias para
 
 ## Créditos y fuentes
 
-Este trabajo parte del [repositorio Cisco original de DS3 Perú](https://github.com/ds3peru/cisco) y de su [plantilla de producto Cisco](https://ds3peru.github.io/cisco/C9200L-24P-4G-E.html). Los archivos originales se mantienen intactos; el rediseño AMP utiliza archivos independientes.
+Este trabajo parte del [repositorio Cisco original de DS3 Perú](https://github.com/ds3peru/cisco) y de su [plantilla de producto Cisco](https://ds3peru.github.io/cisco/C9200L-24P-4G-E.html). El rediseño AMP utiliza archivos independientes. El índice Cisco original se respalda sin cambios en `legacy/index-cisco.html`; el nuevo `index.html` solo redirige a AMP. Los demás archivos Cisco permanecen intactos.
 
 La información comercial, los contenidos de producto, las marcas, las fotografías y el PDF proceden de DS3 Comunicaciones y sus respectivas fuentes. No se atribuye autoría propia sobre esos recursos ni se concede una licencia adicional sobre ellos.
 
